@@ -10,10 +10,18 @@ const db = require('../db/connection');
 const users = db.get('users');
 users.createIndex('username',{unique: true});
 
-const userSchema = Joi.object().keys({
+const userCreationSchema = Joi.object().keys({
+  firstName: Joi.string().required(),
+  lastName: Joi.string().required(),
   username: Joi.string().regex(/(^[a-zA-Z0-9_]*$)/).min(3).max(30).required(),
   password: Joi.string().trim().min(6).required(),
 })
+
+const userLoginSchema = Joi.object().keys({
+  username: Joi.string().regex(/(^[a-zA-Z0-9_]*$)/).min(3).max(30).required(),
+  password: Joi.string().trim().min(6).required(),
+})
+
 
 function respondError422(res, next) {
   res.status(422);
@@ -24,6 +32,8 @@ function respondError422(res, next) {
 function createToken(user, res, next) {
   const payload = {
     _id: user._id,
+    firstName: user.firstName,
+    lastName: user.lastName,
     username: user.username,
     role: user.role
   };
@@ -43,7 +53,7 @@ function createToken(user, res, next) {
 
 router.post('/signup', middleware.isAdmin, (req,res, next) => {
     console.log('Body', req.body)
-    const result = Joi.validate(req.body,userSchema); 
+    const result = Joi.validate(req.body,userCreationSchema); 
     
     if(result.error === null) {
       users.findOne({username: req.body.username}).then(function(user) {
@@ -56,6 +66,8 @@ router.post('/signup', middleware.isAdmin, (req,res, next) => {
         //Hash Password and Create User
         bcrypt.hash(req.body.password, 12).then(hash => {
           const newUser = {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
             username: req.body.username,
             password: hash,
             role: "user",
@@ -73,7 +85,7 @@ router.post('/signup', middleware.isAdmin, (req,res, next) => {
 });
 
 router.post('/login', (req,res,next) => {
-  const result = Joi.validate(req.body,userSchema)
+  const result = Joi.validate(req.body,userLoginSchema)
   if (result.error === null) {
     users.findOne({username: req.body.username}).then(function(user) {
       if (user) {

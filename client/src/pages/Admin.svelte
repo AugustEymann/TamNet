@@ -4,6 +4,8 @@
     import { onMount } from "svelte";
     import NavBar from '../components/Navbar.svelte'
     let username;
+    let firstName;
+    let lastName;
     let password;
 	let userData;
     let errorNotification = '';
@@ -114,6 +116,8 @@
 
     function createUser() {
         let body = {
+            firstName: firstName,
+            lastName: lastName,
             username: username,
             password: password
         }
@@ -216,6 +220,18 @@
 							</div>						
 						{/if}
 						<form>
+                        	<div class="uk-margin">
+								<div class="uk-inline uk-width-1-1">
+									<span class="uk-form-icon" uk-icon="icon: user"></span>
+									<input class="uk-input uk-form-large" bind:value={firstName} placeholder="First Name" type="text">
+								</div>
+							</div>
+                            <div class="uk-margin">
+								<div class="uk-inline uk-width-1-1">
+									<span class="uk-form-icon" uk-icon="icon: users"></span>
+									<input class="uk-input uk-form-large" bind:value={lastName} placeholder="Last Name" type="text">
+								</div>
+							</div>
 							<div class="uk-margin">
 								<div class="uk-inline uk-width-1-1">
 									<span class="uk-form-icon" uk-icon="icon: user"></span>

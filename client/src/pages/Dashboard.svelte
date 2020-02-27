@@ -35,7 +35,7 @@
     <NavBar/>
     <div class="uk-container">
     	{#if userData} 
-            <h2>Welcome, {userData.username}</h2>
+            <h2>Welcome, {userData.firstName} 🔥</h2>
         {:else}
             <center>
                 <img src="https://faviconer.net/preloaders/25/Snake.gif" alt="Loading...">
