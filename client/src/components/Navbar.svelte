@@ -22,10 +22,10 @@
             });
     })
 
-function logOut() {
-    localStorage.removeItem('token')
-    navigate('/', {replace: true})
-}
+    function logOut() {
+        localStorage.removeItem('token')
+        navigate('/', {replace: true})
+    }
 </script>
 
 <nav class="uk-navbar-container uk-margin" uk-navbar>
@@ -49,7 +49,7 @@ function logOut() {
         </ul>
         <ul class="uk-navbar-nav">
             <li>
-                <Link to="/dashboard">
+                <Link to="/archive">
                     Photo Archive
                 </Link>
             </li>

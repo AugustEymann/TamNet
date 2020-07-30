@@ -1,6 +1,5 @@
 const express = require('express');
 const Joi = require('joi');
-
 const db = require('../db/connection');
 const users = db.get('users');
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const volleyball = require('volleyball');
 const cors = require('cors');
+const path = require('path')
 
 require('dotenv').config()
 
@@ -8,7 +9,7 @@ const auth = require('./auth/index')
 const middleware = require('./auth/middlewares')
 const users = require('./api/users')
 const admin = require('./api/admin')
-
+const archive = require('./api/archive')
 
 const app = express();  
 
@@ -31,6 +32,8 @@ app.use('/auth', auth);
 
 app.use('/api/v1/users', middleware.isLoggedIn, users)
 app.use('/api/v1/admin', middleware.isAdmin, admin)
+app.use('/api/v1/archive', archive)
+app.use('/api/v1/uploads', express.static(path.join(__dirname, 'uploads')))
 
 function notFound(req, res, next) {
   res.status(404);

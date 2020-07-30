@@ -165,7 +165,8 @@
                     <div>
                         <div class="uk-card uk-card-default uk-card-hover uk-card-body">
                             <a on:click={setCurrent(user)} class="uk-position-right uk-padding-small" uk-toggle="target: #modal-userEditor" uk-icon="settings"></a>
-                            <p>id: {user._id}</p>           
+                            <p>id: {user._id}</p>
+                            <p>Name: {user.firstName} {user.lastName}</p>     
                             <p>Username: {user.username}</p>
                             <p>Role: {user.role}</p>
                         </div>

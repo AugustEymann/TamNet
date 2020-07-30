@@ -2,7 +2,8 @@ const express = require('express');
 const Joi = require('joi');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const middleware = require('./middlewares')
+const middleware = require('./middlewares');
+const shortId = require('shortid');
 
 const router = express.Router();
 
@@ -66,13 +67,15 @@ router.post('/signup', middleware.isAdmin, (req,res, next) => {
         //Hash Password and Create User
         bcrypt.hash(req.body.password, 12).then(hash => {
           const newUser = {
+            _id: shortId.generate(),
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             username: req.body.username,
             password: hash,
             role: "user",
           }
-          users.insert(newUser).then(result => {
+          console.log(newUser._id)
+          users.insert(newUser, {castIds: false}).then(result => {
             createToken(result,res,next)
           });
         });
