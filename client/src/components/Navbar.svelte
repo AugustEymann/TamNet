@@ -31,7 +31,7 @@
 <nav class="uk-navbar-container uk-margin" uk-navbar>
     <div class="uk-navbar-left">
         <div class="uk-navbar-item uk-logo">
-            <img src='https://yt3.ggpht.com/a/AGF-l78ytThuDYFlcW6jiU-2d894DUBYb_wIyIZjWA=s288-c-k-c0xffffffff-no-rj-mo' alt="Logo" width="50px" height="50px    "/>
+            <img src='http://localhost:8080/cdn/tamTranspo.png' alt="TamNet" width="100px" height="100px"/>
         </div>
         <ul class="uk-navbar-nav">
             <li>

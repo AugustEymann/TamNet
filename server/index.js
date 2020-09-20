@@ -28,6 +28,7 @@ app.get('/', (req, res) => {
   });
 });
 
+app.use('/cdn', express.static(path.join(__dirname, 'cdn')))
 app.use('/auth', auth);
 
 app.use('/api/v1/users', middleware.isLoggedIn, users)

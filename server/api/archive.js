@@ -38,6 +38,7 @@ router.get('/', (req,res,next) => {
 });
 
 router.post('/', upload.single('file'), (req,res,next) => {
+    console.log(req.file)
     const newUpload = {
         _id: shortId.generate(),
         fileName: req.file.filename,

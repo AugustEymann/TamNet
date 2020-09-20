@@ -11,8 +11,8 @@
     let currentImage = ''
     let searchParam = ''
     let currentFilter = 'Date'
-    function getArchive() {
-        fetch('http://localhost:8080/api/v1/archive', {
+    let getArchive = async() => {
+        await fetch('http://localhost:8080/api/v1/archive', {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('token')}`,
             },
@@ -66,15 +66,26 @@
         currentFilter = newFilter;
     }
 
-    function filterList() {
-        if (searchParam === '') {
-            getArchive();
-        } else {
+    let filterList = async() => {
+        await getArchive();
         archiveData = archiveData.filter(function (e) {
             let info = e[currentFilter.toLowerCase()]
             return info.includes(searchParam)
         });
-        }   
+    }
+
+    let uploadArchive = async() => {
+        let form = document.getElementById('uploadForm');
+        let formBody = new FormData(form);
+        let response =  await fetch('http://localhost:8080/api/v1/archive/', {
+            method: 'POST',
+            body: formBody,
+			headers: {
+                authorization: `Bearer ${localStorage.getItem('token')}`,
+            }
+        });
+        console.log(await response.json());
+
     }
     
 
@@ -93,7 +104,7 @@
 
         <h2>Photo Archive 📸</h2>
 
-        <button class="uk-button uk-button-primary" type="button" uk-toggle="target: #modal-imageUploader">Upload</button>
+        <button class="uk-button uk-button-primary" type="button" uk-toggle="target: #modal-imageUpload">Upload</button>
 
         {:else}
             <center>
@@ -156,43 +167,50 @@
             <div class="uk-modal-dialog">
                 <button class="uk-modal-close-default" type="button" uk-close></button>
                 <div class="uk-modal-header">
-                    <h2 class="uk-modal-title">Account Creation</h2>
+                    <h2 class="uk-modal-title">Image Upload</h2>
                 </div>
                 <div class="uk-modal-body" uk-overflow-auto>
-                  
-                    <form>
+                    <form id="uploadForm" on:submit|preventDefault={uploadArchive} >
                         <div class="uk-margin">
                             <div class="uk-inline uk-width-1-1">
-                                <span class="uk-form-icon" uk-icon="icon: user"></span>
-                                <input class="uk-input uk-form-large" placeholder="First Name" type="text">
+                                <input class="uk-input uk-form-large" id="uploadDate" name="date" placeholder="Date" type="text">
                             </div>
                         </div>
                         <div class="uk-margin">
                             <div class="uk-inline uk-width-1-1">
-                                <span class="uk-form-icon" uk-icon="icon: users"></span>
-                                <input class="uk-input uk-form-large"  placeholder="Last Name" type="text">
+                                <input class="uk-input uk-form-large" id="uploadCompany" name="company" placeholder="Company" type="text">
+                            </div>
+                        </div>
+                        <div class="uk-margin">
+                            <div class="uk-margin uk-width-1-1">
+                                    <input class="uk-input uk-form-large" id="uploadProject" name="project" placeholder="Project" type="text">
                             </div>
                         </div>
                         <div class="uk-margin">
                             <div class="uk-inline uk-width-1-1">
-                                <span class="uk-form-icon" uk-icon="icon: user"></span>
-                                <input class="uk-input uk-form-large"  placeholder="Username" type="text">
+                                <input class="uk-input uk-form-large" id="uploadLocation" name="location" placeholder="Location" type="text">
                             </div>
                         </div>
                         <div class="uk-margin">
                             <div class="uk-inline uk-width-1-1">
-                                <span class="uk-form-icon" uk-icon="icon: lock"></span>
-                                <input class="uk-input uk-form-large"   placeholder="Password" type="password">	
+                                <input class="uk-input uk-form-large"  id="uploadTP" name="tpNumber" placeholder="TP #" type="text">
                             </div>
+                        </div>
+                        <div class="uk-margin">
+                            <div class="uk-inline uk-width-1-1">
+                                <input class="uk-input uk-form-large" id="uploadPeople"  name="people" placeholder="People" type="text">
+                            </div>
+                        </div>
+                        <div class="uk-margin">
+                            <div class="uk-inline uk-width-1-1">
+                                <input type="file" id="file" name="file" accept="image/*" />
+                            </div>
+                        </div>
+                        <div class="uk-modal-footer uk-text-right">
+                            <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                            <input type="submit" class="uk-button uk-button-primary" value="Upload">
                         </div>
                 </div>
-
-                <div class="uk-modal-footer uk-text-right">
-                    <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-                    <button class="uk-button uk-button-primary" type="button">Create</button>
-                </div>
-
-            </div>
         </div>
     
 </main>
